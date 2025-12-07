@@ -10,12 +10,14 @@ class CustomButton extends StatelessWidget {
     required this.onTap,
     this.backgroundColor = AppColors.primary,
     this.colorText,
+    this.isLoading = false,
   });
 
   final String title;
   final VoidCallback onTap;
   final Color? backgroundColor;
   final Color? colorText;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -33,12 +35,18 @@ class CustomButton extends StatelessWidget {
                 : BorderSide(color: colorText!),
           ),
         ),
-        child: Text(
-          title,
-          style: AppStyles.textSemiBold16.copyWith(
-            color: colorText ?? AppColors.white,
-          ),
-        ),
+        child: isLoading
+            ? Center(
+                child: CircularProgressIndicator(
+                  color: colorText ?? AppColors.white,
+                ),
+              )
+            : Text(
+                title,
+                style: AppStyles.textSemiBold16.copyWith(
+                  color: colorText ?? AppColors.white,
+                ),
+              ),
       ),
     );
   }
