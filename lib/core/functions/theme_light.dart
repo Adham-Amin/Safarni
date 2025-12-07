@@ -20,11 +20,15 @@ ThemeData themeLight() {
     ),
     inputDecorationTheme: InputDecorationTheme(
       hintStyle: AppStyles.textRegular14.copyWith(color: AppColors.grey),
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(4.r)),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(4.r),
+        borderSide: const BorderSide(color: Color(0xffD0D5DD)),
+      ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(4.r),
+        borderSide: const BorderSide(color: Color(0xffD0D5DD)),
       ),
-      prefixIconColor: AppColors.primary,
+      prefixIconColor: Color(0xffAFAFAF),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(4.r),
         borderSide: const BorderSide(color: AppColors.primary),

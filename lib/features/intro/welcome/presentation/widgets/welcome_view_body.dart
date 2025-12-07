@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:safarni/core/functions/extentions.dart';
+import 'package:safarni/core/routes/app_routes.dart';
 import 'package:safarni/core/utils/app_assets.dart';
 import 'package:safarni/core/utils/app_colors.dart';
 import 'package:safarni/core/utils/app_styles.dart';
@@ -28,10 +30,17 @@ class WelcomeViewBody extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           24.hs,
-          CustomButton(title: 'Sign Up', onTap: () {}),
+          CustomButton(
+            title: 'Sign Up',
+            onTap: () {
+              context.push(AppRoutes.register);
+            },
+          ),
           24.hs,
           CustomButton(
-            onTap: () {},
+            onTap: () {
+              context.push(AppRoutes.login);
+            },
             title: 'Log In',
             backgroundColor: AppColors.white,
             colorText: AppColors.primary,

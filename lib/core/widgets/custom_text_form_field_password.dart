@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:safarni/core/utils/app_colors.dart';
 import 'package:safarni/core/utils/app_styles.dart';
 
 class CustomTextFormFieldPassword extends StatefulWidget {
@@ -30,7 +29,7 @@ class _CustomTextFormFieldPasswordState
       validator: widget.validator,
       style: AppStyles.textRegular14,
       decoration: InputDecoration(
-        prefixIcon: Icon(Icons.lock),
+        prefixIcon: Icon(Icons.lock_outline),
         hintText: widget.hintText,
         suffixIcon: IconButton(
           onPressed: () {
@@ -39,8 +38,10 @@ class _CustomTextFormFieldPasswordState
             });
           },
           icon: Icon(
-            isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-            color: AppColors.primary,
+            isPasswordVisible
+                ? Icons.visibility_outlined
+                : Icons.visibility_off_outlined,
+            color: Color(0xffAFAFAF),
           ),
         ),
       ),
