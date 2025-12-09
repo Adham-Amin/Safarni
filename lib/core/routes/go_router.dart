@@ -5,9 +5,11 @@ import 'package:safarni/features/auth/presentation/views/login_view.dart';
 import 'package:safarni/features/auth/presentation/views/otp_view.dart';
 import 'package:safarni/features/auth/presentation/views/register_view.dart';
 import 'package:safarni/features/auth/presentation/views/reset_password_view.dart';
+import 'package:safarni/features/auth/presentation/views/verify_email_view.dart';
 import 'package:safarni/features/intro/onbording/presentation/views/onbording_view.dart';
 import 'package:safarni/features/intro/splash/presentation/views/splash_view.dart';
 import 'package:safarni/features/intro/welcome/presentation/views/welcome_view.dart';
+import 'package:safarni/features/main/main_view.dart';
 
 abstract class AppGoRouter {
   static final router = GoRouter(
@@ -45,6 +47,15 @@ abstract class AppGoRouter {
         path: AppRoutes.resetPassword,
         builder: (context, state) =>
             ResetPasswordView(email: state.extra as String),
+      ),
+      GoRoute(
+        path: AppRoutes.verifyEmail,
+        builder: (context, state) =>
+            VerifyEmailView(email: state.extra as String),
+      ),
+      GoRoute(
+        path: AppRoutes.main,
+        builder: (context, state) => MainView(key: MainView.mainViewKey),
       ),
     ],
   );

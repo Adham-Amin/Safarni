@@ -7,5 +7,6 @@ abstract class AppRoutes {
   static const forgetPassword = '/forgetPassword';
   static const otp = '/otp';
   static const resetPassword = '/resetPassword';
+  static const verifyEmail = '/verifyEmail';
   static const main = '/main';
 }
