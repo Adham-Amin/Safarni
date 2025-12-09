@@ -1,4 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:safarni/core/functions/extentions.dart';
@@ -7,6 +11,8 @@ import 'package:safarni/core/utils/app_colors.dart';
 import 'package:safarni/core/utils/app_styles.dart';
 import 'package:safarni/core/widgets/custom_button.dart';
 import 'package:safarni/core/widgets/custom_rich_text.dart';
+import 'package:safarni/core/widgets/custom_snack_bar.dart';
+import 'package:safarni/features/auth/presentation/manager/cubit/auth_cubit.dart';
 import 'package:safarni/features/auth/presentation/widgets/pin_section.dart';
 
 class OtpViewBody extends StatefulWidget {
@@ -19,6 +25,7 @@ class OtpViewBody extends StatefulWidget {
 }
 
 class _OtpViewBodyState extends State<OtpViewBody> {
+  bool isLoading = false;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -43,15 +50,36 @@ class _OtpViewBodyState extends State<OtpViewBody> {
             CustomRichText(
               text: 'OTP not receive ? ',
               linkText: 'send again',
-              onTap: () {},
+              onTap: () {
+                customSnackBar(
+                  context: context,
+                  message: 'Successfully Send again',
+                  type: AnimatedSnackBarType.success,
+                );
+                context.read<AuthCubit>().sendEmailVerification(
+                  email: widget.email,
+                );
+              },
             ),
             16.hs,
             CustomButton(
+              isLoading: isLoading,
               title: 'Verify',
               onTap: () {
                 if (formKey.currentState!.validate()) {
                   formKey.currentState!.save();
-                  context.push(AppRoutes.resetPassword, extra: widget.email);
+                  setState(() {
+                    isLoading = true;
+                  });
+                  Future.delayed(const Duration(seconds: 1), () {
+                    isLoading = false;
+                    customSnackBar(
+                      context: context,
+                      message: 'Verified',
+                      type: AnimatedSnackBarType.success,
+                    );
+                    context.push(AppRoutes.resetPassword, extra: widget.email);
+                  });
                 }
               },
             ),

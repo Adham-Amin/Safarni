@@ -43,6 +43,8 @@ class ServerFailure extends Failure {
       return ServerFailure(response['message']);
     } else if (statusCode == 409) {
       return ServerFailure(response['message']);
+    } else if (statusCode == 422) {
+      return ServerFailure(response['message']);
     } else {
       return ServerFailure('There was an error , please try again');
     }

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:safarni/core/di/service_locator.dart';
+import 'package:safarni/features/auth/domain/repo/auth_repo.dart';
+import 'package:safarni/features/auth/presentation/manager/cubit/auth_cubit.dart';
 import 'package:safarni/features/auth/presentation/widgets/reset_password_view_body.dart';
 
 class ResetPasswordView extends StatelessWidget {
@@ -9,14 +13,17 @@ class ResetPasswordView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => context.pop(),
-          icon: Icon(Icons.arrow_back_ios_new_outlined),
+    return BlocProvider(
+      create: (context) => AuthCubit(authRepo: getIt<AuthRepo>()),
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () => context.pop(),
+            icon: Icon(Icons.arrow_back_ios_new_outlined),
+          ),
         ),
+        body: ResetPasswordViewBody(email: email),
       ),
-      body: ResetPasswordViewBody(),
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:safarni/core/di/service_locator.dart';
 import 'package:safarni/core/functions/theme_dark.dart';
 import 'package:safarni/core/functions/theme_light.dart';
 import 'package:safarni/core/routes/go_router.dart';
@@ -10,6 +11,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   await Prefs.init();
+  serverLocator();
   runApp(const Safarni());
 }
 

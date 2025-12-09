@@ -21,7 +21,11 @@ class _SplashViewBodyState extends State<SplashViewBody> {
   void initState() {
     Future.delayed(const Duration(seconds: 3), () {
       if (Prefs.getBool('SeenOn')) {
-        context.go(AppRoutes.welcome);
+        if (Prefs.getUser() != null) {
+          context.go(AppRoutes.main);
+        } else {
+          context.go(AppRoutes.welcome);
+        }
       } else {
         context.go(AppRoutes.onbording);
       }

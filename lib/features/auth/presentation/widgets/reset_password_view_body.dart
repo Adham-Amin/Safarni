@@ -1,5 +1,6 @@
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:safarni/core/functions/extentions.dart';
@@ -10,9 +11,12 @@ import 'package:safarni/core/utils/app_styles.dart';
 import 'package:safarni/core/widgets/custom_button.dart';
 import 'package:safarni/core/widgets/custom_snack_bar.dart';
 import 'package:safarni/core/widgets/custom_text_form_field_password.dart';
+import 'package:safarni/features/auth/presentation/manager/cubit/auth_cubit.dart';
 
 class ResetPasswordViewBody extends StatefulWidget {
-  const ResetPasswordViewBody({super.key});
+  const ResetPasswordViewBody({super.key, required this.email});
+
+  final String email;
 
   @override
   State<ResetPasswordViewBody> createState() => _ResetPasswordViewBodyState();
@@ -20,6 +24,7 @@ class ResetPasswordViewBody extends StatefulWidget {
 
 class _ResetPasswordViewBodyState extends State<ResetPasswordViewBody> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
   late TextEditingController _passController, _confirmPassController;
 
   @override
@@ -42,6 +47,7 @@ class _ResetPasswordViewBodyState extends State<ResetPasswordViewBody> {
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Form(
         key: formKey,
+        autovalidateMode: autovalidateMode,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -89,18 +95,43 @@ class _ResetPasswordViewBodyState extends State<ResetPasswordViewBody> {
               },
             ),
             16.hs,
-            CustomButton(
-              title: 'Reset Password',
-              onTap: () {
-                if (formKey.currentState!.validate()) {
-                  formKey.currentState!.save();
+            BlocConsumer<AuthCubit, AuthState>(
+              listener: (context, state) {
+                if (state is AuthError) {
                   customSnackBar(
                     context: context,
-                    message: 'Password reset successfully',
+                    message: state.message,
+                    type: AnimatedSnackBarType.error,
+                  );
+                }
+                if (state is AuthLoaded) {
+                  customSnackBar(
+                    context: context,
+                    message: 'Successfully Reset Password',
                     type: AnimatedSnackBarType.success,
                   );
-                  context.go(AppRoutes.login);
+                  context.go(AppRoutes.welcome);
                 }
+              },
+              builder: (context, state) {
+                return CustomButton(
+                  title: 'Reset Password',
+                  isLoading: state is AuthLoading,
+                  onTap: () {
+                    if (formKey.currentState!.validate()) {
+                      formKey.currentState!.save();
+                      context.read<AuthCubit>().resetPassword(
+                        email: widget.email,
+                        password: _passController.text,
+                        confirmpassword: _confirmPassController.text,
+                      );
+                    } else {
+                      setState(() {
+                        autovalidateMode = AutovalidateMode.always;
+                      });
+                    }
+                  },
+                );
               },
             ),
           ],

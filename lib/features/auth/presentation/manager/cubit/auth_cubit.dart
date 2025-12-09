@@ -31,6 +31,7 @@ class AuthCubit extends Cubit<AuthState> {
       password: password,
       confirmPassword: confirmPassword,
     );
+    await sendEmailVerification(email: email);
     result.fold(
       (l) => emit(AuthError(message: l.message)),
       (r) => emit(AuthLoaded()),
@@ -38,12 +39,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> sendEmailVerification({required String email}) async {
-    emit(AuthLoading());
-    var result = await authRepo.sendEmailVerification(email: email);
-    result.fold(
-      (l) => emit(AuthError(message: l.message)),
-      (r) => emit(AuthLoaded()),
-    );
+    await authRepo.sendEmailVerification(email: email);
   }
 
   Future<void> confirmEmailVerification({
